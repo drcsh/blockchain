@@ -7,7 +7,7 @@ I've written the system in a more OO style than the tutorial suggests, making so
 # Requirements
 A python 3.6 (tested on 3.7) development environment with virtual environment set up. I use virtualenvwrapper + virtualenv. 
 
-After that all you should need to do is ```pip install -r requirements.txt``
+After that all you should need to do is ```pip install -r requirements.txt```
 
 # Running a blockchain node
 The run.sh file will start up the Flask development server running on localhost port 5000.
