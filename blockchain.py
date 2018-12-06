@@ -18,6 +18,11 @@ class SHA256Hashable(object):
 
 
 class Block(SHA256Hashable):
+    """
+        A Block is the key conceptual component of a Blockchain. It is linked to the previous block in the chain by a hash, 
+        and contains a record of Transactions. Because each block contains the Hash of the previous, overwriting earlier data
+        is hard to achieve (but not impossible if you control a majority of Nodes).
+    """
 
     def __init__(self, index, transactions, proof, previous_hash):
 
@@ -27,13 +32,38 @@ class Block(SHA256Hashable):
         self.proof = proof
         self.previous_hash = previous_hash
 
+    def serialize(self):
+        """
+            Custom method for serlializing a block, including all attached transactions.
+            :return: a serialized version of this class
+            :rtype dict:
+        """
+        serialized_block = self.__dict__
+
+        # __dict__ doesn't recursively convert objects, so we need to overwrite the key.
+        transactions = [transaction.serialize() for transaction in self.transactions]
+        serialized_block["transactions"] = transactions
+
+        return serialized_block
+
 
 class Transaction(SHA256Hashable):
+    """
+        Record of a transaction to be recorded in the Blockchain.
+    """
 
     def __init__(self, sender, recipient, amount):
         self.sender = sender
         self.recipient = recipient
         self.amount = amount
+
+    def serialize(self):
+        """
+            This is technically redundant but the code is tidier with symmetry between this and Block.
+            :return: a serialized version of this class
+            :rtype dict:
+        """
+        return self.__dict__
 
 
 class Blockchain(object):

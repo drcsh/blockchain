@@ -40,8 +40,7 @@ def mine():
     block = blockchain.new_block(proof, previous_hash)
 
     # encode response as JSON
-    serialized_transactions = [transaction.__dict__ for transaction in block.transactions]
-
+    serialized_transactions = [transaction.serialize() for transaction in block.transactions]
     response = {
         'message': "New Block Forged",
         'index': block.index,
@@ -54,7 +53,8 @@ def mine():
 
 @app.route('/chain', methods=['GET'])
 def full_chain():
-    serialized_blocks = [block.__dict__ for block in blockchain.chain]
+    serialized_blocks = [block.serialize() for block in blockchain.chain]
+    print(serialized_blocks)
     response = {
         'chain': serialized_blocks,
         'length': len(blockchain.chain),
