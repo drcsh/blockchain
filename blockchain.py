@@ -12,9 +12,20 @@ class SHA256Hashable(object):
             :return: a hex string representing the hash.
             :rtype: str
         """
-        block_string = json.dumps(self.__dict__, sort_keys=True).encode()
+        block_string = json.dumps(self.serialize(), sort_keys=True).encode()
         sha3 = hashlib.sha256(block_string)
         return sha3.hexdigest()
+
+
+    def serialize(self):
+        """
+            By default this function just returns the dict representation of this object. If this object has collections 
+            of objects, this method will need to be overwridden to recursively serialize those objects. 
+
+            :return: a serialized version of this class
+            :rtype dict:
+        """
+        return self.__dict__
 
 
 class Block(SHA256Hashable):
@@ -56,14 +67,6 @@ class Transaction(SHA256Hashable):
         self.sender = sender
         self.recipient = recipient
         self.amount = amount
-
-    def serialize(self):
-        """
-            This is technically redundant but the code is tidier with symmetry between this and Block.
-            :return: a serialized version of this class
-            :rtype dict:
-        """
-        return self.__dict__
 
 
 class Blockchain(object):
